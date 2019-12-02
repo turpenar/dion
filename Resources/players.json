@@ -1,0 +1,33 @@
+{
+	"new_player": {
+		"name": "",
+		"first_name": "",
+		"last_name": "", 
+		"gender": "male",
+		"description": "You seem to be one piece.", 
+		"handle": ["self"], 
+		"adjectives": [],
+		"level": 0,
+		"health": 10,
+		"strength": 50,
+		"constitution": 1,
+		"spirit": 0,
+		"mana": 0,
+		"dexterity": 0,
+		"defense": 10,
+		"right_hand": "",
+		"left_hand": "",
+		"money": 0,
+		"inventory": {
+			"Clothing": ["a simple shirt", "some simple trousers", "leather backpack"],
+			"Armor": [],
+			"Rings": [],
+			"Neck": []
+			},
+		"location_x": 0,
+		"location_y": 0,
+		"room": "None",
+		"area": "Field",
+		"quests": []
+	}
+}
