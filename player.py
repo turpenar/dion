@@ -35,7 +35,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
         self.player_data = self.get_player_by_name(name=player_name)
 
-        self.name = self.player_data['name']
+        self.name = self.player_data['first_name']
         self.first_name = self.player_data['first_name']
         self.last_name = self.player_data['last_name']
         self.gender = self.player_data['gender']
@@ -97,8 +97,12 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         area_rooms = world.area_rooms(self.area)
         print(random.choice(list(area_rooms)))
 
-    def is_alive(self):
-        return self.health > 0
+    def is_dead(self):
+        if self.health > 0:
+            return False
+        else:
+            print("You're dead! You will need to restart from your last saved point.")
+            return True
 
     def status(self, **kwargs):
         print(
@@ -146,11 +150,15 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def move_north(self, **kwargs):
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         self.move(dx=0, dy=-1)
         return
 
     def move_south(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         self.move(dx=0, dy=1)
         return
@@ -158,11 +166,15 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def move_east(self, **kwargs):
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         self.move(dx=1, dy=0)
         return
 
     def move_west(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         self.move(dx=-1, dy=0)
         return
@@ -173,6 +185,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
     def go(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         if not kwargs['direct_object']:
             print("Go where?")
@@ -202,6 +216,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
     def look(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         if not kwargs['indirect_object']:
             print(self.room.intro_text())
@@ -301,6 +317,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def get(self, **kwargs):
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         if not kwargs['direct_object']:
             print("I'm sorry, I could not understand what you wanted.")
             return
@@ -332,6 +350,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
     def put(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         if not kwargs['direct_object']:
             print("What is it you're trying to put down?")
@@ -374,6 +394,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def give(self, **kwargs):
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         elif not kwargs['direct_object']:
             print("What are you trying to give?")
             return
@@ -399,6 +421,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
     def drop_item(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         elif not kwargs['direct_object']:
             print("I'm sorry, I could not understand what you wanted.")
@@ -427,6 +451,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def attack(self, **kwargs):
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         elif kwargs['direct_object']:
             self.target = kwargs['direct_object']
             return
@@ -452,6 +478,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def skin(self, **kwargs):
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         elif not kwargs['direct_object']:
             print("What are you trying to skin?")
             return
@@ -471,6 +499,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
     def search(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         if not kwargs['direct_object']:
             items_found = 0
@@ -504,6 +534,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         """Determines if an item can be sold as well as calls the npc's sell function"""
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         elif not kwargs['direct_object']:
             print("What is it you are trying to sell?")
             return
@@ -518,6 +550,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         """Moves the player randomly to an adjacent tile"""
         if self.check_round_time():
             return
+        if self.is_dead():
+            return
         available_moves = self.room.adjacent_moves()
         r = random.randint(0, len(available_moves) - 1)
         self.do_action(available_moves[r])
@@ -525,6 +559,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
 
     def ask(self, **kwargs):
         if self.check_round_time():
+            return
+        if self.is_dead():
             return
         elif not kwargs['direct_object']:
             print("Who are you trying to ask?")
@@ -539,9 +575,6 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
                     return
             else:
                 print("That doesn't seem to do any good.")
-
-    def is_dead(self):
-        print("Unfortunately you have died my friend.")
 
     def check_quest(self, quest):
         with lock:

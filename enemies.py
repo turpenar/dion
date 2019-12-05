@@ -1,4 +1,9 @@
 
+"""
+This module contains enemy classes. Each enemy will operate on its own thread.
+"""
+
+
 import threading as threading
 import time as time
 import textwrap as textwrap

@@ -324,8 +324,8 @@
 		}
 	},
 	"Miscellaneous": {
-		"emmeara_message": {
-			"name": "emmeara's message",
+		"emmera_message": {
+			"name": "Emmera's message",
 			"description": "The message is made of fine parchment, artfully crafted with crisp edges. The message is rolled tightly, sealed with a silk ribbon and a blot of dried wax. The message glows somewhat, as if the word on the parchment, if there are any at all, are not the only thing the message is carrying.",
 			"value": 0,
 			"handle": ["message"],

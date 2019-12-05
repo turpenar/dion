@@ -311,7 +311,7 @@ with simply helping out an old man."\
 "Here, this ought to hold you for now. Who knows, you might even be able to put it to good use."
 He reaches over and picks up a pair of light leather arm greaves and tosses them your direction. You jerk to the left
 and stretch out your hand to grab the poorly thrown greaves. They are heavier than you expect, but you scoop them
-out of the air without trouble. You smile and Gander and nod in gratitude.
+out of the air without trouble. You smile at Gander and nod in gratitude.
 "Yeah, yeah, yeah. Just don't go telling everyone I'm giving things away." With that, he gets back to his current
 project.\
                 '''.format(self.first_name))
@@ -396,7 +396,8 @@ An voice fades in and and out of your attention. You circle to see if someone is
 anything.\
                 ''',
                     '''\
-Silently, and with slight whisps, a voice speaks to you, "You are more than this town. Go to where the streets end.
+Silently, and with slight whisps, a voice speaks to you, "You are more than this town. Go to where the streets end
+and wait.
 You will find me there."\
                 ''',
                     '''\
@@ -441,7 +442,7 @@ and drop the parchment. The scene reverts back to the cul de sac with Emmera sit
 
 Emmera hesitates for a moment, letting you breath in what just happened.
 \
-                    ''')
+                    '''.format(self.character.first_name))
         time.sleep(10)
         print('''\
 After a few seconds she says, "I understand this must be a little overwhelming, but you must listen. You have never 
@@ -494,16 +495,14 @@ please.\
         self.quest02_step1()
         while self.character.quests['prologue'].steps_complete['step_1'] == False:
             time.sleep(5)
-            print("made it to step 1")
-            if self.character.check_inventory_for_item(item=items.Miscellaneous(item_name="emmeara_message")):
-                print("completed step 1")
+            if self.character.check_inventory_for_item(item=items.Miscellaneous(item_name="emmera_message")):
                 self.character.quests['prologue'].steps_complete['step_1'] = True
         while self.character.quests['prologue'].steps_complete['step_2'] == False:
             time.sleep(30)
             if self.character.quests['the_first_quest'].quest_complete == True:
                 self.quest02_voices()
                 if (self.character.room.room_name == "Cul De Sac") and (
-                        self.character.check_inventory_for_item(item=items.Miscellaneous(item_name="emmeara_message"))):
+                        self.character.check_inventory_for_item(item=items.Miscellaneous(item_name="emmera_message"))):
                     self.character.room.add_npc(self)
                     self.quest02_step2()
 

@@ -1,5 +1,6 @@
 
 """
+This module is the main gateway to the game. It contains start menu text and basic character setup.
 """
 
 import pathlib as pathlib
@@ -83,7 +84,6 @@ def play():
     \
     """.format(saved_character_names_print))
 
-    char_data = None
     character = None
     char_found = False
     while char_found == False:
@@ -119,6 +119,12 @@ def play():
         else:
             print("That is not an option. Please select from the available options.")
 
+    print("""\
+    
+    ***  Type HELP for a list of commands available to you. Type HELP <command> for assistance with a particular
+    command usage.  ***
+    \
+    """)
 
     room = world.tile_exists(x=character.location_x, y=character.location_y, area=character.area)
     room.fill_room(character=character)
