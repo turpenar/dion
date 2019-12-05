@@ -39,6 +39,8 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         self.first_name = self.player_data['first_name']
         self.last_name = self.player_data['last_name']
         self.gender = self.player_data['gender']
+        self.object_pronoun = None
+        self.possessive_pronoun = None
         self.level = self.player_data['level']
         self.health = self.player_data['health']
         self.strength = self.player_data['strength']
@@ -47,13 +49,6 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         self.mana = self.player_data['mana']
         self.dexterity = self.player_data['dexterity']
         self.defense = self.player_data['defense']
-
-        if self.gender == "female":
-            self.object_pronoun = "She"
-            self.possessive_pronoun = "Her"
-        if self.gender == "male":
-            self.object_pronoun = "He"
-            self.possessive_pronoun = "His"
 
         self.money = self.player_data['money']
 
@@ -87,6 +82,16 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         for quest in self.player_data['quests']:
             self.quests[quest] = quests.Quest(quest_name=quest, character=self)
             self.quests[quest].start()
+
+    def set_gender(self, gender):
+        if gender == "female":
+            self.gender = gender
+            self.object_pronoun = "She"
+            self.possessive_pronoun = "Her"
+        if gender == "male":
+            self.gender = gender
+            self.object_pronoun = "He"
+            self.possessive_pronoun = "His"
 
     def test(self, **kwargs):
         area_rooms = world.area_rooms(self.area)

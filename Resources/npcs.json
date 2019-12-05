@@ -75,7 +75,7 @@
 		"location_y": 0,
 		"room": "None",
 		"area": "DochasGrounds",
-		"quests": ["epologue"]
+		"quests": ["prologue"]
 	},
 	"dochas_town_guard": {
 		"name": "Dochas Town Guard", 
@@ -91,8 +91,8 @@
 		"left_hand": "",
 		"inventory": {
 			"Money": [],
-			"Clothing": ["tattered_clothes","worn_leather_armor"],
-			"Armor": [],
+			"Clothing": ["tattered_clothes"],
+			"Armor": ["worn_leather_armor"],
 			"Weapons": [],
 			"Rings": [],
 			"Neck": []

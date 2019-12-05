@@ -4,11 +4,45 @@
 
 import pathlib as pathlib
 import pickle as pickle
-import os as os
+import time as time
 
 import world as world
 import player as player
 import actions as actions
+
+def new_character_introduction(character):
+    print('''
+
+
+
+The beast becomes restless...  hungry and tired...
+
+
+    \
+    ''')
+    time.sleep(5)
+    print('''\
+    
+    
+                    ...it trembles with anger, and the earth shakes...
+    
+    
+    \
+    ''')
+    time.sleep(5)
+    print('''\
+    
+Far away, you lay in a field surrounded by trees.    
+You close your eyes and an unsettling feeling comes over you. You dread having to go back into town and resume a 
+day you already know is going to be a waste. But you know that people rely on you and your resolve. They trust you,
+at least that's what they say. "That {}, {} really knows how to get things done."
+
+You open your eyes...
+    
+    \
+    '''.format(character.first_name, character.object_pronoun))
+    time.sleep(10)
+
 
 def play():
 
@@ -61,9 +95,20 @@ def play():
 
             first_name = input("Please provide a first name for your character:  ")
             last_name = input("Please provide a last name for your character:  ")
+            gender_options = ["male", "female"]
+
+            while character.gender == "None":
+                gender = input("What is your character's gender:  ")
+                if gender == "male" or gender == "female":
+                    character.set_gender(gender)
+                else:
+                    print("That is an invalid input")
+                    print("Please choose {}".format(gender_options))
 
             character.first_name = first_name
             character.last_name = last_name
+
+            new_character_introduction(character)
 
         elif set(saved_character_names) & {option}:
             for char_data in saved_characters:

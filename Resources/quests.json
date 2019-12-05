@@ -21,9 +21,9 @@
 			"experience": 1000
 		}
 	},
-	"epologue": {
-		"name": "The Epologue", 
-		"description": "This quest is the finish to The Epologue.", 
+	"prologue": {
+		"name": "The Prologue", 
+		"description": "This quest is the finish to The Prologue.", 
 		"handle": ["quest02"],
 		"adjectives": [],
 		"quest_giver": "emmeara_sadana",
@@ -36,7 +36,7 @@
 			"step_2": false
 		},
 		"quest_complete": false,
-		"quest_complete_text": "Congratulations! You've completed the Epologue!",
+		"quest_complete_text": "Congratulations! You've completed the Prologue!",
 		"reward": {
 			"item": ["leather_arm_greaves"],
 			"experience": 1000

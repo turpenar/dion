@@ -477,28 +477,28 @@ certain of is that this is a defining moment your life.\
 
         time.sleep(10)
         print("""\
-Congratulations. You have completed the Epologue of Dion. You are free to explore the environment and interact as you
+Congratulations. You have completed the Prologue of Dion. You are free to explore the environment and interact as you
 please.\
                             """)
-        self.character.quests['epologue'].steps_complete['step_2'] = True
-        self.character.quests['epologue'].quest_complete = True
+        self.character.quests['prologue'].steps_complete['step_2'] = True
+        self.character.quests['prologue'].quest_complete = True
 
 
     def run(self):
-        if not self.character.check_quest(quest=self.quests['epologue']):
-            self.character.add_quest(quest_name='epologue', quest=self.quests['epologue'])
+        if not self.character.check_quest(quest=self.quests['prologue']):
+            self.character.add_quest(quest_name='prologue', quest=self.quests['prologue'])
         self.room.add_npc(npc=self)
         self.room.remove_hidden_npc(npc=self)
         while self.character.room != self.room:
             time.sleep(0.2)
         self.quest02_step1()
-        while self.character.quests['epologue'].steps_complete['step_1'] == False:
+        while self.character.quests['prologue'].steps_complete['step_1'] == False:
             time.sleep(5)
             print("made it to step 1")
             if self.character.check_inventory_for_item(item=items.Miscellaneous(item_name="emmeara_message")):
                 print("completed step 1")
-                self.character.quests['epologue'].steps_complete['step_1'] = True
-        while self.character.quests['epologue'].steps_complete['step_2'] == False:
+                self.character.quests['prologue'].steps_complete['step_1'] = True
+        while self.character.quests['prologue'].steps_complete['step_2'] == False:
             time.sleep(30)
             if self.character.quests['the_first_quest'].quest_complete == True:
                 self.quest02_voices()
