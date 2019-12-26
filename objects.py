@@ -1,9 +1,6 @@
 
 
-import pathlib as pathlib
-import json as json
 import random as random
-import sys as sys
 
 import mixins as mixins
 import items as items
@@ -30,7 +27,7 @@ class Object(mixins.ReprMixin, mixins.DataFileMixin):
     def skin(self, room):
         print("You cannot skin {}.".format(self.name))
 
-    def search(self):
+    def search(self, character):
         NotImplementedError()
 
 
@@ -47,7 +44,7 @@ class Door(Object):
         elif character.room.room_name == self.object_data['location_2']['name']:
             return self.object_data['location_1']
 
-    def search(self):
+    def search(self, character):
         pass
 
 
@@ -63,6 +60,7 @@ class Corpse(Object):
         self.skin = self.object_data['skin']
         self.loot_drop_rate = self.object_data['loot']['drop_rate']
         self.loot_categories = self.object_data['loot']['items']
+        self.loot_money = self.object_data['loot']['gulden']
 
     def skin_corpse(self):
         if self.skin == None:
@@ -72,7 +70,7 @@ class Corpse(Object):
             self.room.add_item(items.Skin(item_name=self.skin))
         return
 
-    def search(self):
+    def search(self, character):
         possible_items = {}
         area = "Wilds"
         for category in self.loot_categories:
@@ -80,7 +78,7 @@ class Corpse(Object):
                 if all_items_categories[category][item]['level'] <= self.level and all_items_categories[category][item]['area'] == area:
                     possible_items[item] = all_items_categories[category][item]
         if len(possible_items) == 0:
-            print("You did not find anything on {}.".format(self.name))
+            print("You did not find any items on {}.".format(self.name))
         else:
             found_item = random.choice(list(possible_items))
             found_item = getattr(__import__('items'), possible_items[found_item]['category'])(item_name=found_item)
@@ -88,6 +86,11 @@ class Corpse(Object):
             print(self)
             print(self.handle)
             self.room.add_item(found_item)
+        if self.loot_money == 0:
+            print("You did not find any gulden on {}.".format(self.name))
+        else:
+            character.add_money(self.loot_money)
+            print("You found {} gulden on {}!".format(self.loot_money, self.name))
         self.room.remove_object(self)
         self.room = None
         return

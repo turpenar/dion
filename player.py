@@ -42,6 +42,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         self.object_pronoun = None
         self.possessive_pronoun = None
         self.level = self.player_data['level']
+        self.experience = self.player_data['experience']
         self.health = self.player_data['health']
         self.strength = self.player_data['strength']
         self.constitution = self.player_data['constitution']
@@ -96,6 +97,14 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def test(self, **kwargs):
         area_rooms = world.area_rooms(self.area)
         print(random.choice(list(area_rooms)))
+
+    def add_money(self, amount):
+        with lock:
+            self.money += amount
+
+    def subtract_money(self, amount):
+        with lock:
+            self.money -= amount
 
     def is_dead(self):
         if self.health > 0:
@@ -468,7 +477,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
             for enemy in self.room.enemies:
                 if set(enemy.handle) & set(self.target):
                     enemy_found= True
-                    combat.do_physical_damage(self, enemy)
+                    combat.do_physical_damage_to_enemy(self, enemy)
                     self.set_round_time(3)
                     return
             if not enemy_found:
@@ -516,7 +525,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         else:
             for object in self.room.objects:
                 if set(object.handle) & set(kwargs['direct_object']):
-                    object.search()
+                    object.search(character=self)
                     return
             for item in self.room.items:
                 if set(item.handle) & set(kwargs['direct_object']):

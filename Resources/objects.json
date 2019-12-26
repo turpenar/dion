@@ -56,6 +56,44 @@
 			"y": 2
 		}
 	}, 
+	"dochas_smallhouse_gate": {
+		"name": "Small House Gate", 
+		"description": "You see a small gate leading to the doorstep of the house.", 
+		"handle": ["gate"],
+		"visibility": 100,
+		"adjectives": [],
+		"location_1": {
+			"name": "A Small House",
+			"area": "Dochas",
+			"x": 2,
+			"y": 0
+		},
+		"location_2": {
+			"name": "Doorstep",
+			"area": "DochasSmallHouse",
+			"x": 0,
+			"y": 0
+		}
+	}, 
+	"dochas_smallhouse_door": {
+		"name": "Small House Door", 
+		"description": "You see a door, which fits awkwardly in the doorjam.", 
+		"handle": ["door"],
+		"visibility": 100,
+		"adjectives": [],
+		"location_1": {
+			"name": "Doorstep",
+			"area": "DochasSmallHouse",
+			"x": 0,
+			"y": 0
+		},
+		"location_2": {
+			"name": "Triage",
+			"area": "DochasSmallHouse",
+			"x": 0,
+			"y": 2
+		}
+	}, 
 	"edgwood_forest_path": {
 		"name": "a path", 
 		"description": "You see an unassuming path meant for foot traffic through the woods.", 
@@ -91,7 +129,8 @@
 		"level": 1,
 		"loot": {
 			"drop_rate": 100,
-			"items": ["clothing"]
+			"items": ["clothing"],
+			"money": 20
 		},
 		"skin": ""
 	},
@@ -104,7 +143,8 @@
 		"level": 1,
 		"loot": {
 			"drop_rate": 100,
-			"items": []
+			"items": [],
+			"money": 20
 		},
 		"skin": ""
 	},
@@ -117,7 +157,8 @@
 		"level": 0,
 		"loot": {
 			"drop_rate": 100,
-			"items": []
+			"items": [],
+			"money": 10
 		},
 		"skin": "boar_hide"
 	}

@@ -91,7 +91,7 @@ class Enemy(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
             if self.health <= 0:
                 break
             elif (self.room == self.target.room) and (self.target.health > 0):
-                combat.do_physical_damage(self, self.target)
+                combat.do_physical_damage_to_character(self, self.target)
             else:
                 available_actions = self.room.adjacent_moves_enemy(area=self.area)
                 action = random.choice(available_actions)

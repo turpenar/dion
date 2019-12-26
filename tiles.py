@@ -75,6 +75,7 @@ class MapTile(mixins.DataFileMixin):
         obvious = []
         if len(moves) == 0:
             obvious = 'None'
+            return "Obvious exits:  {}".format(obvious)
         for move in moves:
             obvious.append(move.action[0])
         obvious = ', '.join(obvious)
@@ -253,6 +254,11 @@ class DochasGrounds(Town):
 
 
 class DochasLeatherworks(Town):
+    def __init__(self, x, y, area_name, room_name):
+        super().__init__(x=x, y=y, area_name=area_name, room_name=room_name)
+
+
+class DochasSmallHouse(Town):
     def __init__(self, x, y, area_name, room_name):
         super().__init__(x=x, y=y, area_name=area_name, room_name=room_name)
 

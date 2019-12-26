@@ -8,6 +8,7 @@
 		"handle": ["self"], 
 		"adjectives": [],
 		"level": 0,
+		"experience": 0,
 		"health": 10,
 		"strength": 50,
 		"constitution": 1,

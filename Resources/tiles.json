@@ -58,8 +58,8 @@
 			"name": "A Small House", 
 			"area": "Dochas",
 			"class": "Dochas",
-			"description": "Tucked in between the larger villas and set a small distance from the road, you see a small thatched house. You would miss it entirely if you weren't paying close attention. Flowers sit on the window sill and a scent of cooking eminates from the windows. The house is well kept and tidy. It even appears as though someone swept the front walk leading up to the house.",
-			"doors": [],
+			"description": "Tucked in between the larger villas and set a short distance from the road, you see a small thatched house. You would miss it entirely if you weren't paying close attention. Flowers sit on the window sill and a scent of cooking eminates from the windows. The house is well kept and tidy. It even appears as though someone swept the front walk leading up to the house.",
+			"doors": ["dochas_smallhouse_gate"],
 			"clothing": [],
 			"weapons": [],
 			"npcs": [],
@@ -281,6 +281,80 @@
 			"clothing": [],
 			"weapons": [],
 			"npcs": ["gander_diggle"],
+			"items": [],
+			"spawn": [],
+			"hidden": {
+				"doors": [],
+				"npcs": [],
+				"items": []
+				},
+			"exit": false
+		}
+	},
+	"DochasSmallHouse": {
+		"house_doorstep": {
+			"name": "Doorstep", 
+			"area": "Dochas Small House",
+			"class": "DochasSmallHouse",
+			"description": "The front of the house is quaint and cozy. The smell from the house becomes stronger as you approach the door. The thatches of the house have settled asymmetrically and provide a mosaic of patterns on the facade of the house.",
+			"doors": ["dochas_smallhouse_gate", "dochas_smallhouse_door"],
+			"clothing": [],
+			"weapons": [],
+			"npcs": [],
+			"items": [],
+			"spawn": [],
+			"hidden": {
+				"doors": [],
+				"npcs": [],
+				"items": []
+				},
+			"exit": true
+		}, 
+		"house_triage": {
+			"name": "Triage", 
+			"area": "Dochas Small House",
+			"class": "DochasSmallHouse",
+			"description": "The main room of the small house is cramped and crowded. Cots line the walls, all but one occupied with patients.  Two nurses hustle between this room and the kitchen in the back with bandages and pots of strange concoctions.",
+			"doors": ["dochas_smallhouse_door"],
+			"clothing": [],
+			"weapons": [],
+			"npcs": [],
+			"items": [],
+			"spawn": [],
+			"hidden": {
+				"doors": [],
+				"npcs": [],
+				"items": []
+				},
+			"exit": false
+		}, 
+		"house_livingroom": {
+			"name": "Living Room", 
+			"area": "Dochas Small House",
+			"class": "DochasSmallHouse",
+			"description": "The living room is less busy than the adjacent triage room. Two patients sit on weathered couches opposite each other. They converse about their latest adventures and how it's not like the good ol' days.",
+			"doors": [],
+			"clothing": [],
+			"weapons": [],
+			"npcs": [],
+			"items": [],
+			"spawn": [],
+			"hidden": {
+				"doors": [],
+				"npcs": [],
+				"items": []
+				},
+			"exit": false
+		}, 
+		"house_kitchen": {
+			"name": "Kitchen", 
+			"area": "Dochas Small House",
+			"class": "DochasSmallHouse",
+			"description": "The kitchen, positioned in the back of the house, is where the smell eminates. Several pots are heated in a fire in the corner. A nurse kneeds herbs on a table in the center of the room. Sacks of plants and roots sit along the back wall below the window to the exterior. Glass cabinets frame the entrance doorway filled with glass vials and glass jars, each containing precioius ingredients for recipes.",
+			"doors": [],
+			"clothing": [],
+			"weapons": [],
+			"npcs": [],
 			"items": [],
 			"spawn": [],
 			"hidden": {

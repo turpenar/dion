@@ -36,10 +36,7 @@ class Quest(mixins.DataFileMixin, mixins.ReprMixin, threading.Thread):
 
     def __getstate__(self):
         state = self.__dict__.copy()
-        del state['character']
-        del state['_tstate_lock']
-        del state['_started']
-        del state['_stderr']
+        state = state['quest_data']
         return state
 
     def __setstate__(self, state):
