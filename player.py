@@ -123,15 +123,15 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
             "Spirit:  {} \n"
             "Mana:  {} \n"
             "Dexterity:  {} \n"
-            "Quests: {} \n".format(self.name,
-                                    self.level,
-                                    self.health,
-                                    self.strength,
-                                    self.constitution,
-                                    self.spirit,
-                                    self.mana,
-                                    self.dexterity,
-                                   self.quests)
+            "Experience: {} \n".format(self.name,
+                                       self.level,
+                                       self.health,
+                                       self.strength,
+                                       self.constitution,
+                                       self.spirit,
+                                       self.mana,
+                                       self.dexterity,
+                                       self.experience)
         )
 
     def set_round_time(self, seconds):

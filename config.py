@@ -1,5 +1,5 @@
 import pathlib as pathlib
-import json as json
+import pandas as pd
 
 DATA_DIR = pathlib.Path(__file__).parent / "Resources"
 DATA_FORMAT = "json"
@@ -13,3 +13,5 @@ OBJECT_FILE = str(DATA_DIR / f"objects.{DATA_FORMAT}")
 PLAYER_FILE = str(DATA_DIR / f"players.{DATA_FORMAT}")
 
 TEXT_WRAPPER_WIDTH = 100
+
+EXPERIENCE_FILE = pd.read_csv(DATA_DIR / "Game_Data.csv")

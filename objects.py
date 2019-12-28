@@ -60,7 +60,7 @@ class Corpse(Object):
         self.skin = self.object_data['skin']
         self.loot_drop_rate = self.object_data['loot']['drop_rate']
         self.loot_categories = self.object_data['loot']['items']
-        self.loot_money = self.object_data['loot']['gulden']
+        self.loot_money = self.object_data['loot']['money']
 
     def skin_corpse(self):
         if self.skin == None:

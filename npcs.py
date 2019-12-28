@@ -381,7 +381,7 @@ The parchment swirls right and left before landing a few strides behind the woma
 dropped, she continued south out of sight.
 You emerge from behind the tree and start toward the parchment, but you couldn't quite see where it landed.\
                         ''')
-        self.room.add_hidden_item(items.Miscellaneous(item_name='emmeara_message'))
+        self.room.add_hidden_item(items.Miscellaneous(item_name='emmera_message'))
         self.room.remove_npc(npc=self)
 
     def quest02_voices(self):
