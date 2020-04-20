@@ -8,6 +8,11 @@ TODO:  Introduce stackable items
 import mixins as mixins
 
 
+def link_terminal(terminal):
+    global terminal_output
+    terminal_output = terminal
+
+
 def loot():
     pass
 
@@ -35,7 +40,7 @@ class Item(mixins.ReprMixin, mixins.DataFileMixin):
 
     def contents(self):
         if self.container == False:
-            return "{} cannot hold anything".format(self.name)
+            return "A {} cannot hold anything".format(self.handle[0])
         all_items = []
         if len(self.items) == 0:
             return "{} are empty".format(self.name)

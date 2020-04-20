@@ -4,6 +4,12 @@ import pathlib as pathlib
 import mixins as mixins
 
 # importing all prepositions and prepositional phrases
+
+verbs_path = pathlib.Path.cwd() / 'Resources' / 'verbs.txt'
+with verbs_path.open(mode='r') as file:
+    verbs = file.readlines()
+verbs = [x.strip() for x in verbs]
+
 prepositions_path = pathlib.Path.cwd() / 'Resources' / 'prepositions.txt'
 with prepositions_path.open(mode='r') as file:
     prepositions = file.readlines()
@@ -58,14 +64,17 @@ def find_index(input_list, list_of_matches):
 
 
 def parser(input):
+    input = input.lower()
     tokens = input.split()
     tokens = [x for x in tokens if x not in articles]
 
+    relevant_verbs = set(tokens).intersection(verbs)
     relevant_nouns = set(tokens).intersection(nouns)
     relevant_adjectives = set(tokens).intersection(adjectives)
     relevant_prepositions = set(tokens).intersection(prepositions)
     relevant_determiners = set(tokens).intersection(determiners)
 
+    verb_index = find_index(tokens, relevant_verbs)
     noun_index = find_index(tokens, relevant_nouns)
     adjective_index = find_index(tokens, relevant_adjectives)
     preposition_index = find_index(tokens, relevant_prepositions)
@@ -73,6 +82,11 @@ def parser(input):
 
     kwargs = {}
 
+    if len(verb_index) > 0:
+        kwargs['action_verb'] = tokens[verb_index[0]]
+        kwargs['subject_verb'] = None
+    if len(verb_index) > 1:
+        kwargs['subject_verb'] = tokens[verb_index[1]]
     if len(noun_index) == 0:
         kwargs['direct_object'] = None
         kwargs['indirect_object'] = None

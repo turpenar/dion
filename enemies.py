@@ -14,6 +14,9 @@ import combat as combat
 import objects as objects
 import world as world
 
+def link_terminal(terminal):
+    global terminal_output
+    terminal_output = terminal
 
 class Enemy(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
     def __init__(self, enemy_name: str, target: object, room: object, location_x: int, location_y: int, area: str, **kwargs):
@@ -44,7 +47,7 @@ class Enemy(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
 
         if self.room == target.room:
             for line in textwrap.wrap(self.enemy_data['entrance_text'], 80):
-                print(line)
+                terminal_output.print_text(line)
 
         self.right_hand_inv = self.enemy_data['right_hand']
         self.left_hand_inv = self.enemy_data['left_hand']
@@ -52,13 +55,13 @@ class Enemy(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
     def move(self, dx, dy):
         self.room.remove_enemy(self)
         if self.room == self.target.room:
-            print(self.enemy_data['move_out_text'])
+            terminal_output.print_text(self.enemy_data['move_out_text'])
         self.location_x += dx
         self.location_y += dy
         self.room = world.tile_exists(x=self.location_x, y=self.location_y, area=self.area)
         self.room.add_enemy(self)
         if self.room == self.target.room:
-            print(self.enemy_data['move_in_text'])
+            terminal_output.print_text(self.enemy_data['move_in_text'])
 
     def move_north(self, **kwargs):
         self.move(dx=0, dy=-1)
@@ -76,7 +79,7 @@ class Enemy(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
         return self.health > 0
 
     def is_dead(self):
-        print(self.enemy_data['death_text'])
+        terminal_output.print_text(self.enemy_data['death_text'])
         if self in self.room.enemies:
             self.room.remove_enemy(self)
         self.room.add_object(objects.Corpse(object_name=self.enemy_data['corpse'], room=self.room))
@@ -85,7 +88,7 @@ class Enemy(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
 
     def run(self):
         if self.room == self.target.room:
-            print(self.enemy_data['move_in_text'])
+            terminal_output.print_text(self.enemy_data['move_in_text'])
         while self.health > 0:
             time.sleep(self.enemy_data['round_time'])
             if self.health <= 0:

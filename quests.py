@@ -5,11 +5,8 @@
 """
 
 import threading as threading
-import time as time
-import queue as queue
 
 import mixins as mixins
-import items as items
 
 
 class Quest(mixins.DataFileMixin, mixins.ReprMixin, threading.Thread):

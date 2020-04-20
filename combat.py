@@ -1,4 +1,11 @@
 
+"""
+
+
+TODO: Insert player name in combat text
+"""
+
+
 import random as random
 import threading as threading
 import config as config
@@ -6,6 +13,10 @@ import config as config
 import items as items
 
 lock = threading.Lock()
+
+def link_terminal(terminal):
+    global terminal_output
+    terminal_output = terminal
 
 
 def success(strength, attack_modifier, defense, att_random):
@@ -41,18 +52,18 @@ def do_physical_damage_to_enemy(self, target):
         att_success = success(self.strength, attack_modifier, target.defense, att_random)
         att_damage = damage(att_success, self.constitution)
 
-        print("""\
+        terminal_output.print_text("""\
 {} attacks {}!
 STR {} + ATTMOD {} - DEF {} + RAND {} = {}\
         """.format(self.name, target.name, self.strength, attack_modifier, target.defense, att_random, att_success))
 
         if att_damage < 0:
-            print("""\
+            terminal_output.print_text("""\
 {} evades the attack.\
                 """.format(target.name))
         else:
             target.health = target.health - att_damage
-            print("""\
+            terminal_output.print_text("""\
 {} damages {} by {}.\
                 """.format(self.name, target.name, att_damage))
             if target.health <= 0:
@@ -71,18 +82,18 @@ def do_physical_damage_to_character(self, character):
         att_success = success(self.strength, attack_modifier, character.defense, att_random)
         att_damage = damage(att_success, self.constitution)
 
-        print("""\
+        terminal_output.print_text("""\
 {} attacks {}!
 STR {} + ATTMOD {} - DEF {} + RAND {} = {}\
         """.format(self.name, character.name, self.strength, attack_modifier, character.defense, att_random, att_success))
 
         if att_damage < 0:
-            print("""\
+            terminal_output.print_text("""\
 {} evades the attack.\
                 """.format(character.name))
         else:
             character.health = character.health - att_damage
-            print("""\
+            terminal_output.print_text("""\
 {} damages {} by {}.\
                 """.format(self.name, character.name, att_damage))
             if character.health <= 0:

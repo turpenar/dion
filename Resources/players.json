@@ -9,12 +9,21 @@
 		"adjectives": [],
 		"level": 0,
 		"experience": 0,
+		"attributes": {
+			"strength": 50,
+			"constitution": 1,
+			"dexterity": 0,
+			"agility": 0,
+			"intelligence": 0,
+			"wisdom": 0,
+			"charisma": 0,
+			"spirit": 0
+			},
+		"skills": {
+			"skinning": 0
+			},
 		"health": 10,
-		"strength": 50,
-		"constitution": 1,
-		"spirit": 0,
 		"mana": 0,
-		"dexterity": 0,
 		"defense": 10,
 		"right_hand": "",
 		"left_hand": "",

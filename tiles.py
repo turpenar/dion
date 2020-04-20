@@ -206,11 +206,11 @@ class MapTile(mixins.DataFileMixin):
 
 
     def intro_text(self):
-        return """\
+        return """\n
         [{}, {}] 
         {}
         {}
-        {}\
+        {}
         """.format(self.area,
                    self.room_name,
                    wrapper.fill(text=self.description),
