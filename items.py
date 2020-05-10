@@ -54,7 +54,7 @@ class Item(mixins.ReprMixin, mixins.DataFileMixin):
         return "Inside {} you see {}".format(self.name, all_items_output)
 
     def view_description(self):
-        return self.description
+        terminal_output.print_text("You see " + self.description)
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__

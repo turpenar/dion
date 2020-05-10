@@ -82,10 +82,13 @@ def parser(input):
 
     kwargs = {}
 
-    if len(verb_index) > 0:
+    if len(verb_index) == 0:
+        kwargs['action_verb'] = tokens[0]
+    if len(verb_index) == 1:
         kwargs['action_verb'] = tokens[verb_index[0]]
         kwargs['subject_verb'] = None
     if len(verb_index) > 1:
+        kwargs['action_verb'] = tokens[verb_index[0]]
         kwargs['subject_verb'] = tokens[verb_index[1]]
     if len(noun_index) == 0:
         kwargs['direct_object'] = None

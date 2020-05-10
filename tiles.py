@@ -1,3 +1,14 @@
+
+
+"""
+
+TODO: In Fill Room, replace npc search with simpler Sub-Class search
+TODO: Eliminate need to pass character to the npcs.
+
+"""
+
+
+
 import time as time
 import random as random
 import threading as threading
@@ -20,6 +31,11 @@ lock = threading.Lock()
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(levelname)s] (%(threadName)-10s) %(message)s',
                     )
+
+def link_terminal(terminal):
+    global terminal_output
+    terminal_output = terminal
+
 
 class MapTile(mixins.DataFileMixin):
     def __init__(self, x, y, area_name: str, room_name: str):
@@ -44,19 +60,6 @@ class MapTile(mixins.DataFileMixin):
     def modify_player(self):
         raise NotImplementedError()
 
-    def adjacent_moves(self):
-        """Returns all move actions for adjacent tiles"""
-        moves = []
-        if world.tile_exists(x=self.x, y=self.y - 1, area=self.area):
-            moves.append(actions.MoveNorth())
-        if world.tile_exists(x=self.x, y=self.y + 1, area=self.area):
-            moves.append(actions.MoveSouth())
-        if world.tile_exists(x=self.x + 1, y=self.y, area=self.area):
-            moves.append(actions.MoveEast())
-        if world.tile_exists(x=self.x - 1, y=self.y, area=self.area):
-            moves.append(actions.MoveWest())
-        return moves
-
     def adjacent_moves_enemy(self, area):
         moves = []
         if world.tile_exists(x=self.x, y=self.y - 1, area=self.area):
@@ -71,13 +74,21 @@ class MapTile(mixins.DataFileMixin):
 
     def obvious_exits(self):
         """Returns all of the available actions in this room."""
-        moves = self.adjacent_moves()
+        moves = []
+        if world.tile_exists(x=self.x, y=self.y - 1, area=self.area):
+            moves.append("north")
+        if world.tile_exists(x=self.x, y=self.y + 1, area=self.area):
+            moves.append("south")
+        if world.tile_exists(x=self.x + 1, y=self.y, area=self.area):
+            moves.append("east")
+        if world.tile_exists(x=self.x - 1, y=self.y, area=self.area):
+            moves.append("west")
         obvious = []
         if len(moves) == 0:
             obvious = 'None'
             return "Obvious exits:  {}".format(obvious)
         for move in moves:
-            obvious.append(move.action[0])
+            obvious.append(move)
         obvious = ', '.join(obvious)
         return "Obvious exits:  {}".format(obvious)
 
@@ -206,16 +217,17 @@ class MapTile(mixins.DataFileMixin):
 
 
     def intro_text(self):
-        return """\n
-        [{}, {}] 
-        {}
-        {}
-        {}
+        terminal_output.print_text("""\
+[{}, {}] 
+{}
+{}
+{}
+        \
         """.format(self.area,
                    self.room_name,
                    wrapper.fill(text=self.description),
                    self.obvious_exits(),
-                   self.all_objects())
+                   self.all_objects()))
 
     def spawn_generator(self, character):
         return NotImplementedError()

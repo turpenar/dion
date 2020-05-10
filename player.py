@@ -2,9 +2,7 @@
 """
 
 TODO:  add containter limitation
-TODO:  add ability to look into containers
 TODO:  Define dominant hand. Current default dominant hand is right hand
-TODO:  Placing objects in the backpack creates duplicate objects (one in the backpack and one in the hand). this also throws a __dict__ error.
 """
 
 import random as random
@@ -23,18 +21,22 @@ import actions as actions
 import npcs as npcs
 
 wrapper = textwrap.TextWrapper(width=config.TEXT_WRAPPER_WIDTH)
-
 commands = {}
-
+global character
+global terminal_output
 all_items = mixins.all_items
 all_items_categories = mixins.items
-
 lock = threading.Lock()
 
 
 def link_terminal(terminal):
     global terminal_output
     terminal_output = terminal
+
+
+def create_character(character_name=None):
+    global character
+    character = Player(player_name=character_name)
 
 
 class Player(mixins.ReprMixin, mixins.DataFileMixin):
@@ -60,11 +62,11 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         self.charisma = self.player_data['attributes']['charisma']
         self.spirit = self.player_data['attributes']['spirit']
 
-        self.skinning = self.player_data['skills']['skinning']
-
+        self.defense_base = (self.strength / 4) + (self.constitution / 4)
         self.health = self.player_data['health']
         self.mana = self.player_data['mana']
-        self.defense = self.player_data['defense']
+
+        self.skinning = self.player_data['skills']['skinning']
 
         self.money = self.player_data['money']
 
@@ -272,7 +274,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         else:
             self.room.items.append(self.right_hand_inv[0])
             terminal_output.print_text("You drop " + self.right_hand_inv[0].name)
-            self.right_hand_inv.remove(0)
+            del self.right_hand_inv[0]
             return
 
     def flee(self, **kwargs):
@@ -341,7 +343,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
             for npc in self.room.npcs:
                 if {npc.first_name.lower()} & set(kwargs['indirect_object']):
                     if npc.give_item(self.right_hand_inv[0]):
-                        self.right_hand_inv.remove(0)
+                        del self.right_hand_inv[0]
                         return
                     else:
                         return
@@ -366,7 +368,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
                     self.location_y = new_location['y']
                     self.area = new_location['area']
                     self.room.fill_room(character=self)
-                    terminal_output.print_text(self.room.intro_text())
+                    self.room.intro_text()
                     self.room.run(character=self)
                     object_found = True
             if object_found == False:
@@ -404,21 +406,31 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
             else:
                 inventory_armor = "You are also wearing no armor.".format(self.object_pronoun)
             wealth = "You have {} gulden.".format(self.money)
-            terminal_output.print_text(right_hand)
-            terminal_output.print_text(left_hand)
-            terminal_output.print_text(wrapper.fill(inventory_clothing))
-            terminal_output.print_text(wrapper.fill(inventory_armor))
-            terminal_output.print_text(wrapper.fill(wealth))
-
+            terminal_output.print_text('''\
+{}
+{}
+{}
+{}
+{}
+                                        \
+                                        '''.format(right_hand,
+                                                   left_hand,
+                                                   wrapper.fill(inventory_clothing),
+                                                   wrapper.fill(inventory_armor),
+                                                   wrapper.fill(wealth)))
     def look(self, **kwargs):
         if self.check_round_time():
             return
         if self.is_dead():
             return
-        if not kwargs['indirect_object']:
-            terminal_output.print_text(self.room.intro_text())
+        if kwargs['preposition'] == None:
+            self.room.intro_text()
+            return
         if kwargs['preposition'][0] == 'in':
             item_found = False
+            if kwargs['indirect_object'] is None:
+                terminal_output.print_text("I am not sure what you are referring to.")
+                return
             for item in self.room.items + self.room.objects + self.room.npcs + self.inventory + self.right_hand_inv + self.left_hand_inv:
                 if isinstance(item, npcs.NPC):
                     terminal_output.print_text("It wouldn't be advisable to look in " + item.name)
@@ -426,28 +438,31 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
                 if set(item.handle) & set(kwargs['indirect_object']):
                     terminal_output.print_text(item.contents())
                     return
-            if item_found == False:
-                terminal_output.print_text("A {} is nowhere to be found".format(kwargs['indirect_object'][0]))
+            if item_found is False:
+                terminal_output.print_text("A {} is nowhere to be found.".format(kwargs['indirect_object'][0]))
                 return
         if kwargs['preposition'][0] == 'at':
             item_found = False
+            if kwargs['indirect_object'] is None:
+                terminal_output.print_text("I am not sure what you are referring to.")
+                return
             for item in self.room.items + self.room.objects + self.room.npcs + self.inventory + self.right_hand_inv + self.left_hand_inv:
                 if set(item.handle) & set(kwargs['indirect_object']):
-                    terminal_output.print_text("You see " + item.view_description())
+                    item.view_description()
                     return
             for item in self.inventory:
                 if set(item.handle) & set(kwargs['indirect_object']):
-                    terminal_output.print_text(item.view_description())
+                    item.view_description()
                     return
             for object in self.room.objects:
                 if set(object.handle) & set(kwargs['indirect_object']):
-                    terminal_output.print_text(object.view_description())
+                    object.view_description()
                     return
             for npc in self.room.npcs:
                 if set(npc.handle) & set(kwargs['indirect_object']):
                     npc.view_description()
                     return
-            if item_found == False:
+            if item_found is False:
                 terminal_output.print_text("At what did you want to look?")
                 return
         else:
@@ -459,7 +474,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         self.location_y += dy
         self.room = world.tile_exists(x=self.location_x, y=self.location_y, area=self.area)
         self.room.fill_room(character=self)
-        terminal_output.print_text(self.room.intro_text())
+        self.room.intro_text()
         return
 
     def move_north(self, **kwargs):
@@ -519,8 +534,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
                         return
                     inv_item.items.append(self.right_hand_inv[0])
                     terminal_output.print_text("You put {} {} {}".format(self.right_hand_inv[0].name, kwargs['preposition'][0], inv_item.name))
-                    print(self.right_hand_inv)
-                    self.right_hand_inv.remove(0)
+                    del self.right_hand_inv[0]
                     return
             for room_item in self.room.items:
                 if set(room_item.handle) & set(kwargs['indirect_object']):
@@ -528,9 +542,9 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
                         terminal_output.print_text("{} won't fit {} there.".format(self.right_hand_inv[0].name, kwargs['preposition'][0]))
                         return
                     room_item.items.append(self.right_hand_inv[0])
-                    self.right_hand_inv.remove(0)
+                    del self.right_hand_inv[0]
                     terminal_output.print_text("You put {} {} {}".format(self.right_hand_inv[0].name, kwargs['preposition'][0], room_item.name))
-                    self.right_hand_inv.remove(0)
+                    del self.right_hand_inv[0]
                     return
         elif kwargs['preposition'][0] == "on":
             terminal_output.print_text("You cannot stack items yet.")

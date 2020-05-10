@@ -10,6 +10,7 @@ starting_position = (0, 0)
 
 lock = threading.Lock()
 
+
 def load_tiles():
     """Parses a file that describes the world space into the _world object."""
     for path in map_list:

@@ -32,7 +32,7 @@ class Object(mixins.ReprMixin, mixins.DataFileMixin):
         terminal_output.print_text("I'm not sure how you intend on doing that.")
 
     def view_description(self):
-        return "{}".format(self.description)
+        terminal_output.print_text("{}".format(self.description))
 
     def skin(self, room):
         terminal_output.print_text("You cannot skin {}.".format(self.name))

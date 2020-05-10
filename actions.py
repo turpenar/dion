@@ -134,6 +134,7 @@ class Flee(DoActions):
 
         self.character.flee(**kwargs)
 
+
 @DoActions.register_subclass('get')
 @DoActions.register_subclass('take')
 class Get(DoActions):
@@ -434,11 +435,6 @@ class Action:
         return "{}: {}".format(self.action, self.name)
 
 
-class EnemyAction(Action):
-    def __init__(self, method, name, action, kwargs):
-        super().__init__(method, name, action, **kwargs)
-
-
 class MoveNorthEnemy(Action):
     def __init__(self, **kwargs):
         super().__init__(method=enemies.Enemy.move_north,
@@ -466,43 +462,6 @@ class MoveEastEnemy(Action):
 class MoveWestEnemy(Action):
     def __init__(self, **kwargs):
         super().__init__(method=enemies.Enemy.move_west,
-                         name='Move West',
-                         action=['west'],
-                         kwargs=kwargs)
-
-
-class PlayerAction(Action):
-    def __init__(self, method, name, action, kwargs):
-        super().__init__(method, name, action, **kwargs)
-
-
-class MoveNorth(Action):
-    def __init__(self, **kwargs):
-        super().__init__(method=player.Player.move_north,
-                         name='Move North',
-                         action=['north'],
-                         kwargs=kwargs)
-
-
-class MoveSouth(Action):
-    def __init__(self, **kwargs):
-        super().__init__(method=player.Player.move_south,
-                         name='Move South',
-                         action=['south'],
-                         kwargs=kwargs)
-
-
-class MoveEast(Action):
-    def __init__(self, **kwargs):
-        super().__init__(method=player.Player.move_east,
-                         name='Move East',
-                         action=['east'],
-                         kwargs=kwargs)
-
-
-class MoveWest(Action):
-    def __init__(self, **kwargs):
-        super().__init__(method=player.Player.move_west,
                          name='Move West',
                          action=['west'],
                          kwargs=kwargs)

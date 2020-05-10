@@ -86,11 +86,18 @@ class NPC(mixins.ReprMixin, mixins.DataFileMixin, threading.Thread):
             inventory_armor = "{} is also wearing {}.".format(self.object_pronoun, inventory_armor[0])
         else:
             inventory_armor = "{} is also wearing no armor.".format(self.object_pronoun)
-        terminal_output.print_text(right_hand)
-        terminal_output.print_text(left_hand)
-        terminal_output.print_text(wrapper.fill(self.description))
-        terminal_output.print_text(wrapper.fill(inventory_clothing))
-        terminal_output.print_text(wrapper.fill(inventory_armor))
+        terminal_output.print_text('''\
+{}
+{}
+{}
+{}
+{}
+                        \
+                        '''.format(right_hand,
+                                   left_hand,
+                                   wrapper.fill(self.description),
+                                   wrapper.fill(inventory_clothing),
+                                   wrapper.fill(inventory_armor)))
 
     def intro_text(self):
         return self.entrance_text
