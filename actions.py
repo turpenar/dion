@@ -8,7 +8,6 @@ TODO: Exit out of all demon programs when quit
 import pathlib as pathlib
 
 import world as world
-import player as player
 import enemies as enemies
 import command_parser as command_parser
 

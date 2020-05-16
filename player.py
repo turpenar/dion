@@ -19,6 +19,7 @@ import combat as combat
 import mixins as mixins
 import actions as actions
 import npcs as npcs
+import interface as interface
 
 wrapper = textwrap.TextWrapper(width=config.TEXT_WRAPPER_WIDTH)
 commands = {}
@@ -59,8 +60,19 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
         self.agility = self.player_data['attributes']['agility']
         self.intelligence = self.player_data['attributes']['intelligence']
         self.wisdom = self.player_data['attributes']['wisdom']
-        self.charisma = self.player_data['attributes']['charisma']
+        self.logic = self.player_data['attributes']['logic']
         self.spirit = self.player_data['attributes']['spirit']
+
+        self.physical_points = self.player_data['training']['physical_points']
+        self.mental_points = self.player_data['training']['mental_points']
+
+        self.skill_edged_weapons = self.player_data['skills']['edged_weapons']
+        self.skill_blunt_weapons = self.player_data['skills']['blunt_weapons']
+        self.skill_polearm_weapons = self.player_data['skills']['polearm_weapons']
+        self.skill_armor = self.player_data['skills']['armor']
+        self.skill_shield = self.player_data['skills']['shield']
+        self.skill_physical_fitness = self.player_data['skills']['physical_fitness']
+        self.skill_skinning = self.player_data['skills']['skinning']
 
         self.defense_base = (self.strength / 4) + (self.constitution / 4)
         self.health = self.player_data['health']
@@ -612,7 +624,7 @@ class Player(mixins.ReprMixin, mixins.DataFileMixin):
     def skills(self, **kwargs):
         terminal_output.print_text('''
 Skinning:       {}
-            '''.format(self.skinning)
+            '''.format(self.skill_skinning)
               )
 
     def skin(self, **kwargs):

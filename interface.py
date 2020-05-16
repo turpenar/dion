@@ -1,6 +1,7 @@
 
 
 import tkinter as tk
+import tkinter.messagebox as messagebox
 import tkinter.scrolledtext as tkscrolledtext
 
 import world as world
@@ -13,6 +14,7 @@ import objects as objects
 import game as game
 import char_gen as character_generator
 import tiles as tiles
+import skills as skills
 
 
 class TerminalWindow(tk.Frame):
@@ -40,6 +42,25 @@ class CommandBox(tk.Frame):
         self.user_entry.pack()
 
 
+class SkillBox(tk.Frame):
+    def __init__(self, parent, **kwargs):
+        tk.Frame.__init__(self, parent, **kwargs)
+
+        self.parent = parent
+        self.skills_window = None
+
+        self.skill_button = tk.Button(self, text="Skills", command=self.change_skills)
+        self.skill_button.grid(row=0, column=0)
+
+    def change_skills(self):
+
+        if not self.parent.character_created.get():
+            return
+
+        self.skills_window = tk.Toplevel(self.parent)
+        skills.Skills(self.skills_window)
+
+
 class MainApplication(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
@@ -47,14 +68,17 @@ class MainApplication(tk.Frame):
         self.master = master
         self.new = None
         self.load = None
+        self.skills_window = None
         self.character_created = tk.BooleanVar(self, value=False)
         self.game_start = tk.BooleanVar(self, value=False)
 
         self.terminal_window = TerminalWindow(self)
         self.commandbox = CommandBox(self)
+        self.skillsbox = SkillBox(self)
 
-        self.terminal_window.pack(side=tk.TOP)
-        self.commandbox.pack(side=tk.BOTTOM)
+        self.terminal_window.grid(row=0, column=0)
+        self.commandbox.grid(row=1, column=0)
+        self.skillsbox.grid(row=1, column=1)
 
         player.link_terminal(self.terminal_window)
         actions.link_terminal(self.terminal_window)
@@ -65,6 +89,7 @@ class MainApplication(tk.Frame):
         game.link_terminal(self.terminal_window)
         character_generator.link_terminal(self.terminal_window)
         tiles.link_terminal(self.terminal_window)
+        skills.link_terminal(self.terminal_window)
 
         self.splash_screen()
 
@@ -77,12 +102,10 @@ class MainApplication(tk.Frame):
 
             if (entry == "New Character") or (entry == "1"):
                 self.new_character()
-                self.character_created.set(True)
                 return
 
             if (entry == "Load Character") or (entry == "2"):
                 self.load_character()
-                self.character_created.set(True)
                 return
 
             else:
@@ -109,12 +132,19 @@ class MainApplication(tk.Frame):
     def new_character(self):
         if not self.new:
             self.new = tk.Toplevel(self.master)
-            character_generator.CharacterGenerator(self.new)
+            character_generator.CharacterGenerator(self.new, character_created_var=self.character_created)
+            self.new.protocol('WM_DELETE_WINDOW',func=lambda: self.character_on_closing(self.new))
 
     def load_character(self):
         if not self.load:
             self.load = tk.Toplevel(self.master)
-            character_generator.CharacterLoader(self.load)
+            character_generator.CharacterLoader(self.load, character_created_var=self.character_created)
+            self.load.protocol('WM_DELETE_WINDOW',func=lambda: self.character_on_closing(self.load))
+
+    def skills_change(self):
+        if not self.skills_window:
+            self.skills_window = tk.Toplevel(self.master)
+            skills.Skills(self.master)
 
     def begin_game(self):
 
@@ -154,6 +184,20 @@ class MainApplication(tk.Frame):
     You open your eyes...
         \
         '''.format(player.character.object_pronoun))
+
+    def character_on_closing(self, _frame):
+        if messagebox.askokcancel("Quit", "You don't have your character yet. Do you want to quit?"):
+            _frame.destroy()
+            _frame = None
+
+    def popupmsg(self, msg):
+        self.popup = tk.Tk()
+        self.popup.wm_title("Whoops!")
+        label = tk.Label(self.popup, text=msg)
+        label.pack(side="top", fill="x", pady=10)
+        B1 = tk.Button(self.popup, text="Okay", command=self.popup.destroy)
+        B1.pack()
+        self.popup.mainloop()
 
 
 if __name__ == "__main__":
